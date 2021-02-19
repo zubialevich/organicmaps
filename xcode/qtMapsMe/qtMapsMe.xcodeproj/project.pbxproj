@@ -7,6 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		304164D625E014C000539197 /* libvulkan_wrapper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 304164D525E014C000539197 /* libvulkan_wrapper.a */; };
+		30D5499325E016030022507C /* routing_turns_visualizer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30D5499125E016030022507C /* routing_turns_visualizer.cpp */; };
+		30D5499525E016600022507C /* libweb_api.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 30D5499425E016600022507C /* libweb_api.a */; };
+		30D5499B25E016E20022507C /* mwms_borders_selection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30D5499925E016E20022507C /* mwms_borders_selection.cpp */; };
+		30D549A025E017270022507C /* ruler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30D5499E25E017270022507C /* ruler.cpp */; };
+		30D549A225E017820022507C /* libmetrics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 30D549A125E017820022507C /* libmetrics.a */; };
+		30D549A425E017A90022507C /* libshaders.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 30D549A325E017A90022507C /* libshaders.a */; };
+		30D549A625E017CE0022507C /* libdescriptions.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 30D549A525E017CE0022507C /* libdescriptions.a */; };
+		30D549A825E018100022507C /* libplatform.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 30D549A725E018100022507C /* libplatform.a */; };
+		30D549AA25E018710022507C /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30D549A925E018710022507C /* Security.framework */; };
 		3462FD891DC1DE4600906FD7 /* libeditor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3462FD881DC1DE4600906FD7 /* libeditor.a */; };
 		3462FD8D1DC1E03300906FD7 /* libpugixml.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3462FD8C1DC1E03300906FD7 /* libpugixml.a */; };
 		3462FD8F1DC1E05D00906FD7 /* liboauthcpp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3462FD8E1DC1E05D00906FD7 /* liboauthcpp.a */; };
@@ -15,7 +25,6 @@
 		348FE6851F7BBF7000AAA4AF /* libugc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 348FE6861F7BBF7000AAA4AF /* libugc.a */; };
 		348FE6871F7BBF7A00AAA4AF /* libmwm_diff.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 348FE6881F7BBF7A00AAA4AF /* libmwm_diff.a */; };
 		348FE6891F7BBF9300AAA4AF /* libbsdiff.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 348FE68A1F7BBF9300AAA4AF /* libbsdiff.a */; };
-		34E42EEF20236EA500DF8315 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34E42EEE20236EA400DF8315 /* Alamofire.framework */; };
 		34EF6F8020246E0B00838CBC /* libtransit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34EF6F8120246E0B00838CBC /* libtransit.a */; };
 		34FFD3011E9CEEA20010AD12 /* helpers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34FFD2EF1E9CEEA20010AD12 /* helpers.cpp */; };
 		34FFD3021E9CEEA20010AD12 /* map_widget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34FFD2F11E9CEEA20010AD12 /* map_widget.cpp */; };
@@ -155,7 +164,7 @@
 			outputFiles = (
 				"$(DERIVED_FILE_DIR)/ui_$(INPUT_FILE_NAME).h",
 			);
-			script = "/usr/local/opt/qt5/bin/uic -o ${DERIVED_FILE_DIR}/ui_${INPUT_FILE_BASE}.h ${SCRIPT_INPUT_FILE}\n";
+			script = "${QT_PATH}/bin/uic -o ${DERIVED_FILE_DIR}/ui_${INPUT_FILE_BASE}.h ${SCRIPT_INPUT_FILE}\n";
 		};
 		6729A45A1A684436007D5872 /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
@@ -168,7 +177,7 @@
 			outputFiles = (
 				"$(DERIVED_FILE_DIR)/$(INPUT_FILE_NAME).cpp",
 			);
-			script = "/usr/local/opt/qt5/bin/moc -o ${DERIVED_FILE_DIR}/${INPUT_FILE_NAME}.cpp ${SCRIPT_INPUT_FILE}\n\n";
+			script = "${QT_PATH}/bin/moc -o ${DERIVED_FILE_DIR}/${INPUT_FILE_NAME}.cpp ${SCRIPT_INPUT_FILE}\n\n";
 		};
 		6729A6661A6938AD007D5872 /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
@@ -181,7 +190,7 @@
 			outputFiles = (
 				"$(DERIVED_FILE_DIR)/$(INPUT_FILE_NAME).cpp",
 			);
-			script = "/usr/local/opt/qt5/bin/rcc -name ${INPUT_FILE_BASE} -o ${DERIVED_FILE_DIR}/${INPUT_FILE_NAME}.cpp ${SCRIPT_INPUT_FILE}\n";
+			script = "${QT_PATH}/bin/rcc -name ${INPUT_FILE_BASE} -o ${DERIVED_FILE_DIR}/${INPUT_FILE_NAME}.cpp ${SCRIPT_INPUT_FILE}\n";
 		};
 /* End PBXBuildRule section */
 
@@ -233,6 +242,19 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		304164D525E014C000539197 /* libvulkan_wrapper.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libvulkan_wrapper.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		30D5499125E016030022507C /* routing_turns_visualizer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = routing_turns_visualizer.cpp; sourceTree = "<group>"; };
+		30D5499225E016030022507C /* routing_turns_visualizer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = routing_turns_visualizer.hpp; sourceTree = "<group>"; };
+		30D5499425E016600022507C /* libweb_api.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libweb_api.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		30D5499925E016E20022507C /* mwms_borders_selection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mwms_borders_selection.cpp; sourceTree = "<group>"; };
+		30D5499A25E016E20022507C /* mwms_borders_selection.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = mwms_borders_selection.hpp; sourceTree = "<group>"; };
+		30D5499E25E017270022507C /* ruler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ruler.cpp; sourceTree = "<group>"; };
+		30D5499F25E017270022507C /* ruler.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ruler.hpp; sourceTree = "<group>"; };
+		30D549A125E017820022507C /* libmetrics.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libmetrics.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		30D549A325E017A90022507C /* libshaders.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libshaders.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		30D549A525E017CE0022507C /* libdescriptions.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libdescriptions.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		30D549A725E018100022507C /* libplatform.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libplatform.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		30D549A925E018710022507C /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		3462FD881DC1DE4600906FD7 /* libeditor.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libeditor.a; path = "../../../omim-build/xcode/Release/libeditor.a"; sourceTree = "<group>"; };
 		3462FD8C1DC1E03300906FD7 /* libpugixml.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpugixml.a; path = "../../../omim-build/xcode/Release/libpugixml.a"; sourceTree = "<group>"; };
 		3462FD8E1DC1E05D00906FD7 /* liboauthcpp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liboauthcpp.a; path = "../../../omim-build/xcode/Release/liboauthcpp.a"; sourceTree = "<group>"; };
@@ -241,7 +263,6 @@
 		348FE6861F7BBF7000AAA4AF /* libugc.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libugc.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		348FE6881F7BBF7A00AAA4AF /* libmwm_diff.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libmwm_diff.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		348FE68A1F7BBF9300AAA4AF /* libbsdiff.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libbsdiff.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		34E42EEE20236EA400DF8315 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = ../../iphone/Maps/3party/Carthage/Build/Mac/Alamofire.framework; sourceTree = "<group>"; };
 		34EBB4821DBF53D8005BE9B8 /* common-debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "common-debug.xcconfig"; path = "../common-debug.xcconfig"; sourceTree = "<group>"; };
 		34EBB4831DBF53D8005BE9B8 /* common-release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "common-release.xcconfig"; path = "../common-release.xcconfig"; sourceTree = "<group>"; };
 		34EF6F8120246E0B00838CBC /* libtransit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libtransit.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -392,11 +413,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				675345A61A40534F00A0A8C3 /* CoreFoundation.framework in Frameworks */,
+				30D549AA25E018710022507C /* Security.framework in Frameworks */,
+				30D549A825E018100022507C /* libplatform.a in Frameworks */,
+				30D549A625E017CE0022507C /* libdescriptions.a in Frameworks */,
+				30D549A425E017A90022507C /* libshaders.a in Frameworks */,
+				30D549A225E017820022507C /* libmetrics.a in Frameworks */,
+				30D5499525E016600022507C /* libweb_api.a in Frameworks */,
+				304164D625E014C000539197 /* libvulkan_wrapper.a in Frameworks */,
 				39B9682623E1AC8800D3B8E3 /* libge0.a in Frameworks */,
 				675B562020D15BEF00A521D2 /* libkml.a in Frameworks */,
 				675B561E20D15BC300A521D2 /* libopen_location_code.a in Frameworks */,
 				34EF6F8020246E0B00838CBC /* libtransit.a in Frameworks */,
-				34E42EEF20236EA500DF8315 /* Alamofire.framework in Frameworks */,
 				348FE6891F7BBF9300AAA4AF /* libbsdiff.a in Frameworks */,
 				348FE6871F7BBF7A00AAA4AF /* libmwm_diff.a in Frameworks */,
 				348FE6851F7BBF7000AAA4AF /* libugc.a in Frameworks */,
@@ -438,7 +466,6 @@
 				67534D271A40AA4300A0A8C3 /* CoreLocation.framework in Frameworks */,
 				67534C421A4097D000A0A8C3 /* OpenGL.framework in Frameworks */,
 				675345A81A40535E00A0A8C3 /* Cocoa.framework in Frameworks */,
-				675345A61A40534F00A0A8C3 /* CoreFoundation.framework in Frameworks */,
 				4740186723F5BF3900A93C81 /* minizip.framework in Frameworks */,
 				675345A41A40534500A0A8C3 /* IOKit.framework in Frameworks */,
 			);
@@ -450,12 +477,18 @@
 		3475E0DC1DBF5772004C7E69 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				30D549A925E018710022507C /* Security.framework */,
+				30D549A725E018100022507C /* libplatform.a */,
+				30D549A525E017CE0022507C /* libdescriptions.a */,
+				30D549A325E017A90022507C /* libshaders.a */,
+				30D549A125E017820022507C /* libmetrics.a */,
+				30D5499425E016600022507C /* libweb_api.a */,
+				304164D525E014C000539197 /* libvulkan_wrapper.a */,
 				39B9682523E1AC8800D3B8E3 /* libge0.a */,
 				4740186623F5BF3900A93C81 /* minizip.framework */,
 				675B561F20D15BEF00A521D2 /* libkml.a */,
 				675B561D20D15BC300A521D2 /* libopen_location_code.a */,
 				34EF6F8120246E0B00838CBC /* libtransit.a */,
-				34E42EEE20236EA400DF8315 /* Alamofire.framework */,
 				348FE68A1F7BBF9300AAA4AF /* libbsdiff.a */,
 				348FE6881F7BBF7A00AAA4AF /* libmwm_diff.a */,
 				348FE6861F7BBF7000AAA4AF /* libugc.a */,
@@ -633,6 +666,12 @@
 		6753454B1A404C6100A0A8C3 /* qtMapsMe */ = {
 			isa = PBXGroup;
 			children = (
+				30D5499E25E017270022507C /* ruler.cpp */,
+				30D5499F25E017270022507C /* ruler.hpp */,
+				30D5499925E016E20022507C /* mwms_borders_selection.cpp */,
+				30D5499A25E016E20022507C /* mwms_borders_selection.hpp */,
+				30D5499125E016030022507C /* routing_turns_visualizer.cpp */,
+				30D5499225E016030022507C /* routing_turns_visualizer.hpp */,
 				4415CD952271B1A200AA3A19 /* routing_settings_dialog.cpp */,
 				4415CD972271B1A200AA3A19 /* routing_settings_dialog.hpp */,
 				4415CD962271B1A200AA3A19 /* screenshoter.cpp */,
@@ -691,7 +730,6 @@
 				675345461A404C6100A0A8C3 /* Frameworks */,
 				675345471A404C6100A0A8C3 /* Resources */,
 				6729A5B81A692C7D007D5872 /* CopyFiles */,
-				34EF6F84202471B500838CBC /* Copy frameworks */,
 				4740184023F5BC8E00A93C81 /* Embed Frameworks */,
 			);
 			buildRules = (
@@ -716,7 +754,6 @@
 				TargetAttributes = {
 					675345481A404C6100A0A8C3 = {
 						CreatedOnToolsVersion = 6.1;
-						DevelopmentTeam = 3T6FSDE8C7;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -768,24 +805,6 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		34EF6F84202471B500838CBC /* Copy frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/../../iphone/Maps/3party/Carthage/Build/Mac/Alamofire.framework",
-			);
-			name = "Copy frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks";
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		675345451A404C6100A0A8C3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -803,10 +822,12 @@
 				670D059A1B0CBD5B0013A7AC /* mainwindow.hpp in Sources */,
 				670D05951B0CBD320013A7AC /* preferences_dialog.hpp in Sources */,
 				670D05961B0CBD320013A7AC /* search_panel.hpp in Sources */,
+				30D549A025E017270022507C /* ruler.cpp in Sources */,
 				670D05981B0CBD320013A7AC /* update_dialog.hpp in Sources */,
 				6729A6691A69395E007D5872 /* resources.qrc in Sources */,
 				4415CD992271B1A200AA3A19 /* routing_settings_dialog.cpp in Sources */,
 				34FFD3101E9CEF490010AD12 /* resources_common.qrc in Sources */,
+				30D5499B25E016E20022507C /* mwms_borders_selection.cpp in Sources */,
 				456B3FB01EDEEB04009B3D1F /* build_statistics.cpp in Sources */,
 				456B3FAE1EDEEB04009B3D1F /* build_phone_pack.cpp in Sources */,
 				456B3FAC1EDEEB04009B3D1F /* build_common.cpp in Sources */,
@@ -820,6 +841,7 @@
 				34FFD3021E9CEEA20010AD12 /* map_widget.cpp in Sources */,
 				456B3FB11EDEEB04009B3D1F /* build_style.cpp in Sources */,
 				675345901A404CB200A0A8C3 /* search_panel.cpp in Sources */,
+				30D5499325E016030022507C /* routing_turns_visualizer.cpp in Sources */,
 				45B5B58A1CA4216B00D93E36 /* create_feature_dialog.cpp in Sources */,
 				675345861A404CB200A0A8C3 /* about.cpp in Sources */,
 				6753409F1C5289E0002CF0D9 /* editor_dialog.cpp in Sources */,
@@ -844,14 +866,8 @@
 			baseConfigurationReference = 34EBB4821DBF53D8005BE9B8 /* common-debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(OMIM_ROOT)/iphone/Maps/3party/Carthage/Build/Mac",
-				);
-				"FRAMEWORK_SEARCH_PATHS[sdk=macosx*]" = (
-					"$(inherited)",
-					"$(OMIM_ROOT)/iphone/Maps/3party/Carthage/Build/Mac",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				"FRAMEWORK_SEARCH_PATHS[sdk=macosx*]" = "$(inherited)";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(OMIM_ROOT)/3party/freetype/include",
@@ -860,6 +876,7 @@
 					"$(DERIVED_FILE_DIR)",
 					"$(OMIM_ROOT)/3party/gflags/src",
 					"$(OMIM_ROOT)/3party/jansson/src",
+					"$(QT_PATH)/include",
 				);
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				SUPPORTED_PLATFORMS = macosx;
@@ -873,14 +890,8 @@
 			baseConfigurationReference = 34EBB4831DBF53D8005BE9B8 /* common-release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(OMIM_ROOT)/iphone/Maps/3party/Carthage/Build/Mac",
-				);
-				"FRAMEWORK_SEARCH_PATHS[sdk=macosx*]" = (
-					"$(inherited)",
-					"$(OMIM_ROOT)/iphone/Maps/3party/Carthage/Build/Mac",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				"FRAMEWORK_SEARCH_PATHS[sdk=macosx*]" = "$(inherited)";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(OMIM_ROOT)/3party/freetype/include",
@@ -889,6 +900,7 @@
 					"$(DERIVED_FILE_DIR)",
 					"$(OMIM_ROOT)/3party/gflags/src",
 					"$(OMIM_ROOT)/3party/jansson/src",
+					"$(QT_PATH)/include",
 				);
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				SUPPORTED_PLATFORMS = macosx;
@@ -901,14 +913,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 3T6FSDE8C7;
+				DEVELOPMENT_TEAM = "";
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "mail.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = app.omaps.desktop;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
@@ -918,9 +930,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 3T6FSDE8C7;
+				DEVELOPMENT_TEAM = "";
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -931,7 +943,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "mail.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = app.omaps.desktop;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 			};

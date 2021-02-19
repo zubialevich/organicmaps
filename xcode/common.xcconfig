@@ -2,7 +2,7 @@ CURRENT_PROJECT_VERSION = 10.5.0
 
 // Paths
 OMIM_ROOT = $(PROJECT_DIR)/../..
-QT_PATH = /usr/local/opt/qt5
+QT_PATH = /opt/homebrew/opt/qt5
 BOOST_ROOT = $(OMIM_ROOT)/3party/boost
 
 HEADER_SEARCH_PATHS = $(inherited) $(OMIM_ROOT) $(BOOST_ROOT)
@@ -10,7 +10,7 @@ FRAMEWORK_SEARCH_PATHS[sdk=macosx*] = $(QT_PATH)/lib
 
 // Deployment target
 IPHONEOS_DEPLOYMENT_TARGET = 11.0
-MACOSX_DEPLOYMENT_TARGET = 10.12
+MACOSX_DEPLOYMENT_TARGET = 10.14
 
 // Supported platforms
 SUPPORTED_PLATFORMS = macosx iphonesimulator iphoneos
@@ -73,6 +73,4 @@ ONLY_ACTIVE_ARCH = YES
 PRODUCT_NAME = $(TARGET_NAME)
 SKIP_INSTALL = YES
 SWIFT_VERSION = 5.0
-VALID_ARCHS = arm64
-VALID_ARCHS[sdk=iphonesimulator*] = x86_64
-VALID_ARCHS[sdk=macosx*] = x86_64
+VALID_ARCHS = arm64 arm64e x86_64
