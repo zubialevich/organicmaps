@@ -406,11 +406,13 @@ extension DownloadMapsViewController: StorageObserver {
       configButtons()
     }
 
-    for cell in tableView.visibleCells {
-      guard let downloaderCell = cell as? MWMMapDownloaderTableViewCell else { continue }
-      if downloaderCell.nodeAttrs.countryId != countryId { continue }
-      guard let indexPath = tableView.indexPath(for: downloaderCell) else { return }
-      downloaderCell.config(dataSource.item(at: indexPath), searchQuery: searchBar.text)
+    for _ in tableView.visibleCells {
+      // Referencing tableView.visibleCells automatically initializes them, so the code below is not needed.
+      // See func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
+//      guard let downloaderCell = cell as? MWMMapDownloaderTableViewCell else { continue }
+//      if downloaderCell.nodeAttrs.countryId != countryId { continue }
+//      guard let indexPath = tableView.indexPath(for: downloaderCell) else { return }
+//      downloaderCell.config(dataSource.item(at: indexPath), searchQuery: searchBar.text)
     }
   }
 

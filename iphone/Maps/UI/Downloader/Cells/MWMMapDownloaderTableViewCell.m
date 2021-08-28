@@ -89,11 +89,11 @@
   self.downloadSize.hidden = (size == 0);
 }
 
-- (void)configProgress:(MWMMapNodeAttributes *)nodeAttrs {
+- (void)configProgress:(MWMMapNodeAttributes *)na {
   MWMCircularProgress *progress = self.progress;
   BOOL isModeDownloaded = self.mode == MWMMapDownloaderModeDownloaded;
   MWMButtonColoring coloring = isModeDownloaded ? MWMButtonColoringBlack : MWMButtonColoringBlue;
-  switch (nodeAttrs.nodeStatus) {
+  switch (na.nodeStatus) {
     case MWMMapNodeStatusNotDownloaded:
     case MWMMapNodeStatusPartly: {
       MWMCircularProgressStateVec affectedStates = @[@(MWMCircularProgressStateNormal), @(MWMCircularProgressStateSelected)];
@@ -102,9 +102,20 @@
       progress.state = MWMCircularProgressStateNormal;
       break;
     }
-    case MWMMapNodeStatusDownloading:
-      progress.progress = kMaxProgress * nodeAttrs.downloadedSize / (isModeDownloaded ? nodeAttrs.totalUpdateSizeBytes : nodeAttrs.totalSize - nodeAttrs.downloadingSize);
+    case MWMMapNodeStatusDownloading: {
+      // Avoid NaN and +inf.
+      // TODO: Refactor downloader and do not allow these situations to happen.
+      float denominator;
+      if (isModeDownloaded) {
+        denominator = na.totalUpdateSizeBytes ? na.totalUpdateSizeBytes : na.totalSize;
+      } else {
+        uint64_t const diff = na.totalSize - na.downloadingSize;
+        denominator = diff > 0 ? diff : na.totalSize;
+      }
+      assert(denominator);
+      progress.progress = kMaxProgress * na.downloadedSize / denominator;
       break;
+    }
     case MWMMapNodeStatusApplying:
     case MWMMapNodeStatusInQueue:
       progress.state = MWMCircularProgressStateSpinner;
