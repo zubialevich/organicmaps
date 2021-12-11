@@ -221,7 +221,7 @@ public class MwmApplication extends Application implements AppBackgroundTracker.
     initNativeStrings();
     ThemeSwitcher.INSTANCE.initialize(this);
     SearchEngine.INSTANCE.initialize(null);
-    BookmarkManager.loadBookmarks();
+    BookmarkManager.INSTANCE.nativeLoadBookmarks();
     TtsPlayer.INSTANCE.initialize(this);
     ThemeSwitcher.INSTANCE.restart(false);
     LocationHelper.INSTANCE.initialize(this);

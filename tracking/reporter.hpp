@@ -16,15 +16,13 @@
 #include <string>
 #include <vector>
 
-#if defined(__clang__)
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-copy"
+#if defined(__clang__) and !defined(__ANDROID__)
+  #pragma clang diagnostic push
+  #pragma clang diagnostic ignored "-Wdeprecated-copy"
 #endif
-
 #include <boost/circular_buffer.hpp>
-
-#if defined(__clang__)
-#pragma clang diagnostic pop
+#if defined(__clang__) and !defined(__ANDROID__)
+  #pragma clang diagnostic pop
 #endif
 
 namespace location

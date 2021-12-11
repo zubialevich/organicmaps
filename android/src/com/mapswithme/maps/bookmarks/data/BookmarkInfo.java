@@ -28,7 +28,7 @@ public class BookmarkInfo
   {
     mCategoryId = categoryId;
     mBookmarkId = bookmarkId;
-    mTitle = BookmarkManager.INSTANCE.getBookmarkName(mBookmarkId);
+    mTitle = BookmarkManager.INSTANCE.nativeGetBookmarkName(mBookmarkId);
     mFeatureType = BookmarkManager.INSTANCE.getBookmarkFeatureType(mBookmarkId);
     mIcon = new Icon(BookmarkManager.INSTANCE.getBookmarkColor(mBookmarkId),
                      BookmarkManager.INSTANCE.getBookmarkIcon(mBookmarkId));

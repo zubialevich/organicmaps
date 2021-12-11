@@ -3,21 +3,12 @@
 #include "base/assert.hpp"
 #include "base/logging.hpp"
 
-#if defined(__clang__)
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-parameter"
-#endif
-
 #include <memory>
 #include <sstream>
 #include <string>
 
 #define XML_STATIC
 #include "3party/expat/expat/lib/expat.h"
-
-#if defined(__clang__)
-#pragma clang diagnostic pop
-#endif
 
 template <typename DispatcherT>
 class XmlParser

@@ -5,15 +5,13 @@
 #include <algorithm>
 #include <limits>
 
-#if defined(__clang__)
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-local-typedef"
+#ifdef __clang__
+  #pragma clang diagnostic push
+  #pragma clang diagnostic ignored "-Wunused-local-typedef"
 #endif
-
 #include <boost/range/adaptor/transformed.hpp>
-
-#if defined(__clang__)
-#pragma clang diagnostic pop
+#ifdef __clang__
+  #pragma clang diagnostic pop
 #endif
 
 namespace coding

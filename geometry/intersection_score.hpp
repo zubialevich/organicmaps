@@ -12,8 +12,15 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wshorten-64-to-32"
 #pragma clang diagnostic ignored "-Wcomma"
-#endif
+#endif  // __clang__
+#ifdef __gcc__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wsign-compare"
+#endif  // __gcc__
 #include <boost/geometry.hpp>
+#ifdef __gcc__
+#pragma GCC diagnostic pop
+#endif
 #ifdef __clang__
 #pragma clang diagnostic pop
 #endif

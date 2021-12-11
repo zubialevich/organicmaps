@@ -13,17 +13,8 @@
 #include "base/checked_cast.hpp"
 #include "base/logging.hpp"
 
-#if defined(__clang__)
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-private-field"
-#endif
-
 #include "3party/succinct/elias_fano.hpp"
 #include "3party/succinct/rs_bit_vector.hpp"
-
-#if defined(__clang__)
-#pragma clang diagnostic pop
-#endif
 
 #include <algorithm>
 #include <cstdint>

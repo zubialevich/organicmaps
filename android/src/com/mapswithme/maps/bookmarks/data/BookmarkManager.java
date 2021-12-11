@@ -245,8 +245,7 @@ public enum BookmarkManager
   // Called from JNI.
   @SuppressWarnings("unused")
   @MainThread
-  public void onBookmarksFileLoaded(boolean success, @NonNull String fileName,
-                                    boolean isTemporaryFile)
+  public void onBookmarksFileLoaded(boolean success, @NonNull String fileName, boolean isTemporaryFile)
   {
     // Android could create temporary file with bookmarks in some cases (KML/KMZ file is a blob
     // in the intent, so we have to create a temporary file on the disk). Here we can delete it.
@@ -383,8 +382,6 @@ public enum BookmarkManager
   {
     return nativeGetTrackIdByPosition(catId, positionInCategory);
   }
-
-  public static void loadBookmarks() { nativeLoadBookmarks(); }
 
   public void deleteCategory(long catId) { nativeDeleteCategory(catId); }
 
@@ -582,11 +579,6 @@ public enum BookmarkManager
     return nativeGetCatalogFrontendUrl(utm);
   }
 
-  public void requestRouteTags()
-  {
-    nativeRequestCatalogTags();
-  }
-
   public boolean hasLastSortingType(long catId) { return nativeHasLastSortingType(catId); }
 
   @SortingType
@@ -625,12 +617,6 @@ public enum BookmarkManager
   native BookmarkCategory[] nativeGetBookmarkCategories();
   @NonNull
   native BookmarkCategory[] nativeGetChildrenCategories(long catId);
-
-  @NonNull
-  public String getBookmarkName(@IntRange(from = 0) long bookmarkId)
-  {
-    return nativeGetBookmarkName(bookmarkId);
-  }
 
   @NonNull
   public String getBookmarkFeatureType(@IntRange(from = 0) long bookmarkId)
@@ -772,13 +758,7 @@ public enum BookmarkManager
 
   private native void nativeSetCategoryDescription(long catId, @NonNull String desc);
 
-  private native void nativeSetCategoryTags(long catId, @NonNull String[] tagsIds);
-
-  private native void nativeSetCategoryAccessRules(long catId, int accessRules);
-
-  private native void nativeSetCategoryCustomProperty(long catId, String key, String value);
-
-  private static native void nativeLoadBookmarks();
+  public native void nativeLoadBookmarks();
 
   private native boolean nativeDeleteCategory(long catId);
 
@@ -817,40 +797,13 @@ public enum BookmarkManager
 
   private static native boolean nativeAreAllCategoriesInvisible();
 
-  private static native void nativeSetChildCategoriesVisibility(long catId, boolean visible);
-
   private static native void nativeSetAllCategoriesVisibility(boolean visible);
 
   private static native void nativePrepareFileForSharing(long catId);
 
-  private static native boolean nativeIsCategoryEmpty(long catId);
-
   private static native void nativeSetNotificationsEnabled(boolean enabled);
 
   private static native boolean nativeAreNotificationsEnabled();
-
-  @NonNull
-  private static native String nativeGetCatalogDeeplink(long catId);
-
-  @NonNull
-  private static native String nativeGetCatalogPublicLink(long catId);
-
-  @NonNull
-  private static native String nativeGetWebEditorUrl(@NonNull String serverId);
-
-  @NonNull
-  private static native String nativeGetCatalogFrontendUrl(@UTM.UTMType int utm);
-
-  @NonNull
-  private static native KeyValue[] nativeGetCatalogHeaders();
-
-  @NonNull
-  private static native String nativeInjectCatalogUTMContent(@NonNull String url,
-                                                             @UTM.UTMContentType int content);
-
-  private static native void nativeRequestCatalogTags();
-
-  private static native void nativeRequestCatalogCustomProperties();
 
   private native boolean nativeHasLastSortingType(long catId);
 
@@ -865,12 +818,12 @@ public enum BookmarkManager
   @SortingType
   private native int[] nativeGetAvailableSortingTypes(long catId, boolean hasMyPosition);
 
-  private native boolean nativeGetSortedCategory(long catId, @SortingType int sortingType,
-                                                 boolean hasMyPosition, double lat, double lon,
-                                                 long timestamp);
+  private native void nativeGetSortedCategory(long catId, @SortingType int sortingType,
+                                              boolean hasMyPosition, double lat, double lon,
+                                              long timestamp);
 
   @NonNull
-  private static native String nativeGetBookmarkName(@IntRange(from = 0) long bookmarkId);
+  public native String nativeGetBookmarkName(@IntRange(from = 0) long bookmarkId);
 
   @NonNull
   private static native String nativeGetBookmarkFeatureType(@IntRange(from = 0) long bookmarkId);
@@ -907,7 +860,7 @@ public enum BookmarkManager
 
   private static native double nativeGetElevationCurPositionDistance(long trackId);
 
-  private static native void nativeSetElevationCurrentPositionChangedListener();
+  private native void nativeSetElevationCurrentPositionChangedListener();
 
   public static native void nativeRemoveElevationCurrentPositionChangedListener();
 
@@ -915,7 +868,7 @@ public enum BookmarkManager
 
   private static native double nativeGetElevationActivePointDistance(long trackId);
 
-  private static native void nativeSetElevationActiveChangedListener();
+  private native void nativeSetElevationActiveChangedListener();
 
   public static native void nativeRemoveElevationActiveChangedListener();
 

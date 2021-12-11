@@ -80,10 +80,10 @@ private:
     buffer_vector<uint8_t, 1024> data;
     data.resize_no_init(size);
 
-    m_Reader.Read(offset, &data[0], size);
-    ArrayByteSource src(&data[0]);
+    m_Reader.Read(offset, data.data(), size);
+    ArrayByteSource src(data.data());
 
-    void const * pEnd = &data[0] + size;
+    void const * pEnd = data.data() + size;
     Value value = 0;
     while (src.Ptr() < pEnd)
     {
@@ -122,8 +122,8 @@ private:
     buffer_vector<uint8_t, 576> data;
     data.resize_no_init(size);
 
-    m_Reader.Read(offset, &data[0], size);
-    ArrayByteSource src(&data[0]);
+    m_Reader.Read(offset, data.data(), size);
+    ArrayByteSource src(data.data());
 
     uint32_t const offsetAndFlag = ReadVarUint<uint32_t>(src);
     uint32_t childOffset = offsetAndFlag >> 1;
@@ -147,12 +147,12 @@ private:
         }
       }
       ASSERT(end0 != (static_cast<uint32_t>(1) << m_Header.m_BitsPerLevel) - 1 ||
-             static_cast<uint8_t const *>(src.Ptr()) - &data[0] == size,
-             (beg, end, beg0, end0, offset, size, src.Ptr(), &data[0]));
+             static_cast<uint8_t const *>(src.Ptr()) - data.data() == size,
+             (beg, end, beg0, end0, offset, size, src.Ptr(), data.data()));
     }
     else
     {
-      void const * pEnd = &data[0] + size;
+      void const * pEnd = data.data() + size;
       while (src.Ptr() < pEnd)
       {
         uint8_t const i = src.ReadByte();
