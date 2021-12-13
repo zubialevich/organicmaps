@@ -113,31 +113,6 @@ void PrepareClassRefs(JNIEnv * env)
       jni::GetMethodID(env, bookmarkManagerInstance, "onElevationActivePointChanged", "()V");
 }
 
-void OnPreparedFileForSharing(JNIEnv * env, BookmarkManager::SharingResult const & result)
-{
-  ASSERT(g_bookmarkManagerClass, ());
-  jobject bookmarkManagerInstance = env->GetStaticObjectField(g_bookmarkManagerClass,
-                                                              g_bookmarkManagerInstanceField);
-
-  static jclass classBookmarkSharingResult = jni::GetGlobalClassRef(env,
-    "com/mapswithme/maps/bookmarks/data/BookmarkSharingResult");
-  // Java signature : BookmarkSharingResult(long categoryId, @Code int code,
-  //                                        @NonNull String sharingPath,
-  //                                        @NonNull String errorString)
-  static jmethodID ctorBookmarkSharingResult = jni::GetConstructorID(env,
-    classBookmarkSharingResult, "(JILjava/lang/String;Ljava/lang/String;)V");
-
-  jni::TScopedLocalRef const sharingPath(env, jni::ToJavaString(env, result.m_sharingPath));
-  jni::TScopedLocalRef const errorString(env, jni::ToJavaString(env, result.m_errorString));
-  jni::TScopedLocalRef const sharingResult(env, env->NewObject(classBookmarkSharingResult,
-    ctorBookmarkSharingResult, static_cast<jlong>(result.m_categoryId),
-    static_cast<jint>(result.m_code), sharingPath.get(), errorString.get()));
-
-  env->CallVoidMethod(bookmarkManagerInstance, g_onPreparedFileForSharingMethod,
-                      sharingResult.get());
-  jni::HandleJavaException(env);
-}
-
 Bookmark const * getBookmark(jlong bokmarkId)
 {
   Bookmark const * pBmk = frm()->GetBookmarkManager().GetBookmark(static_cast<kml::MarkId>(bokmarkId));
@@ -458,48 +433,53 @@ Java_com_mapswithme_maps_bookmarks_data_BookmarkManager_nativeIsUsedCategoryName
 }
 
 JNIEXPORT jboolean JNICALL
-Java_com_mapswithme_maps_bookmarks_data_BookmarkManager_nativeIsSearchAllowed(
-        JNIEnv * env, jobject thiz, jlong catId)
+Java_com_mapswithme_maps_bookmarks_data_BookmarkManager_nativeIsSearchAllowed(JNIEnv *, jclass, jlong catId)
 {
   return static_cast<jboolean>(frm()->GetBookmarkManager().IsSearchAllowed(static_cast<kml::MarkGroupId>(catId)));
 }
 
 JNIEXPORT void JNICALL
-Java_com_mapswithme_maps_bookmarks_data_BookmarkManager_nativePrepareForSearch(
-        JNIEnv * env, jobject thiz, jlong catId)
+Java_com_mapswithme_maps_bookmarks_data_BookmarkManager_nativePrepareForSearch(JNIEnv *, jclass, jlong catId)
 {
   frm()->GetBookmarkManager().PrepareForSearch(static_cast<kml::MarkGroupId>(catId));
 }
 
 JNIEXPORT jboolean JNICALL
-Java_com_mapswithme_maps_bookmarks_data_BookmarkManager_nativeAreAllCategoriesInvisible(
-        JNIEnv * env, jobject thiz)
+Java_com_mapswithme_maps_bookmarks_data_BookmarkManager_nativeAreAllCategoriesInvisible(JNIEnv *, jclass)
 {
   return static_cast<jboolean>(frm()->GetBookmarkManager().AreAllCategoriesInvisible());
 }
 
 JNIEXPORT jboolean JNICALL
-Java_com_mapswithme_maps_bookmarks_data_BookmarkManager_nativeAreAllCategoriesVisible(
-        JNIEnv * env, jobject thiz)
+Java_com_mapswithme_maps_bookmarks_data_BookmarkManager_nativeAreAllCategoriesVisible(JNIEnv *, jclass)
 {
   return static_cast<jboolean>(frm()->GetBookmarkManager().AreAllCategoriesVisible());
 }
 
 JNIEXPORT void JNICALL
-Java_com_mapswithme_maps_bookmarks_data_BookmarkManager_nativeSetAllCategoriesVisibility(
-        JNIEnv * env, jobject thiz, jboolean visible)
+Java_com_mapswithme_maps_bookmarks_data_BookmarkManager_nativeSetAllCategoriesVisibility(JNIEnv *, jclass, jboolean visible)
 {
   frm()->GetBookmarkManager().SetAllCategoriesVisibility(static_cast<bool>(visible));
 }
 
 JNIEXPORT void JNICALL
-Java_com_mapswithme_maps_bookmarks_data_BookmarkManager_nativePrepareFileForSharing(
-        JNIEnv * env, jobject thiz, jlong catId)
+Java_com_mapswithme_maps_bookmarks_data_BookmarkManager_nativePrepareFileForSharing(JNIEnv * env, jobject bmClazz, jclass bmSRClazz, jlong catId)
 {
-  frm()->GetBookmarkManager().PrepareFileForSharing(static_cast<kml::MarkGroupId>(catId),
-    [env](BookmarkManager::SharingResult const & result)
+  frm()->GetBookmarkManager().PrepareFileForSharing(static_cast<kml::MarkGroupId>(catId), [=](BookmarkManager::SharingResult const & result)
   {
-    OnPreparedFileForSharing(env, result);
+    // Java signature : BookmarkSharingResult(long categoryId, @Code int code,
+    //                                        @NonNull String sharingPath,
+    //                                        @NonNull String errorString)
+    static jmethodID ctorBookmarkSharingResult = jni::GetConstructorID(env, bmSRClazz, "(JILjava/lang/String;Ljava/lang/String;)V");
+
+    jni::TScopedLocalRef const sharingPath(env, jni::ToJavaString(env, result.m_sharingPath));
+    jni::TScopedLocalRef const errorString(env, jni::ToJavaString(env, result.m_errorString));
+    jni::TScopedLocalRef const sharingResult(env, env->NewObject(bmSRClazz,
+                                                                 ctorBookmarkSharingResult, static_cast<jlong>(result.m_categoryId),
+                                                                 static_cast<jint>(result.m_code), sharingPath.get(), errorString.get()));
+
+    env->CallVoidMethod(bmClazz, g_onPreparedFileForSharingMethod, sharingResult.get());
+    jni::HandleJavaException(env);
   });
 }
 

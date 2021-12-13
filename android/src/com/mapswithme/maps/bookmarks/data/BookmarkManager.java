@@ -560,7 +560,7 @@ public enum BookmarkManager
 
   public void prepareCategoryForSharing(long catId)
   {
-    nativePrepareFileForSharing(catId);
+    nativePrepareFileForSharing(catId, BookmarkSharingResult.class);
   }
 
   public void setNotificationsEnabled(boolean enabled)
@@ -799,7 +799,7 @@ public enum BookmarkManager
 
   private static native void nativeSetAllCategoriesVisibility(boolean visible);
 
-  private static native void nativePrepareFileForSharing(long catId);
+  private native void nativePrepareFileForSharing(long catId, Class<BookmarkSharingResult> bmSRclazz);
 
   private static native void nativeSetNotificationsEnabled(boolean enabled);
 
