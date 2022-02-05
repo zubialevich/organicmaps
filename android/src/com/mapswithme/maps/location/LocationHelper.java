@@ -242,19 +242,21 @@ public enum LocationHelper implements Initializable<Context>, AppBackgroundTrack
   {
     if (foreground)
     {
-      mLogger.d(TAG, "Resumed in foreground");
-
       if (mReceiverRegistered)
       {
         MwmApplication.from(mContext).unregisterReceiver(mReceiver);
         mReceiverRegistered = false;
       }
 
-      start();
+      if (!isActive())
+      {
+        mLogger.d(TAG, "Resumed in foreground");
+        start();
+      }
     }
     else
     {
-      mLogger.d(TAG, "Stopped in background");
+
 
       if (!mReceiverRegistered)
       {
@@ -266,7 +268,11 @@ public enum LocationHelper implements Initializable<Context>, AppBackgroundTrack
         mReceiverRegistered = true;
       }
 
-      stop();
+      if (!PermissionsUtils.isBackgroundLocationGranted(mContext))
+      {
+        mLogger.d(TAG, "Stopped in background");
+        stop();
+      }
     }
   }
 
