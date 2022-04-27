@@ -28,7 +28,6 @@
 #include <QtGui/QIntValidator>
 #include <QtGui/QKeySequence>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QDesktopWidget>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QDockWidget>
@@ -543,7 +542,7 @@ void MainView::AddSelectedFeature(QPoint const & p)
 QDockWidget * MainView::CreateDock(QWidget & widget)
 {
   auto * dock = new QDockWidget(QString(), this /* parent */, Qt::Widget);
-  dock->setFeatures(QDockWidget::DockWidgetClosable | 
+  dock->setFeatures(QDockWidget::DockWidgetClosable |
                     QDockWidget::DockWidgetMovable |
                     QDockWidget::DockWidgetFloatable);
   dock->setWidget(&widget);

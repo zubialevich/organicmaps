@@ -12,8 +12,9 @@
 
 #include "indexer/feature.hpp"
 
+#include <QOpenGLWidget>
+
 #include <QtCore/QTimer>
-#include <QtWidgets/QOpenGLWidget>
 
 #include <memory>
 

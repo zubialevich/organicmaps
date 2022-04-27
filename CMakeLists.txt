@@ -229,13 +229,10 @@ if (NOT PLATFORM_IPHONE AND NOT PLATFORM_ANDROID)
     list(APPEND qt_components Widgets)
   endif()
   if (NOT SKIP_DESKTOP)
-    list(APPEND qt_components Gui Xml Svg)
+    list(APPEND qt_components Gui Xml Svg OpenGL OpenGLWidgets)
   endif()
-  # PATHS are hard-coded hints where to look for qt5 in addition to other places.
-  find_package(Qt5 COMPONENTS REQUIRED ${qt_components} PATHS /usr/local/opt/qt@5)
-  if (Qt5_VERSION VERSION_LESS 5.5.0)
-    message(FATAL_ERROR "Minimum supported Qt5 version is 5.5")
-  endif()
+  # PATHS are hard-coded hints where to look for qt6 in addition to other places.
+  find_package(Qt6 COMPONENTS REQUIRED ${qt_components} PATHS /usr/local/opt/qt@6)
 endif()
 
 find_library(LIBZ NAMES z)
