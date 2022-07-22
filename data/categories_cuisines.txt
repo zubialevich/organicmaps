@@ -451,7 +451,7 @@ sk:Párok v rožku
 
 cuisine-ice_cream
 en:Ice Cream|gelato
-ru:Кафе-мороженое|мороженое
+ru:Мороженое
 bg:Сладолед
 ar:مُثَلّجات
 cs:Zmrzlina
@@ -960,8 +960,8 @@ he:תה
 sk:Čaj
 
 cuisine-vegan|cuisine-vegetarian
-en:Vegan|Vegetarian|veg cafe
-ru:Веганская кухня|Веганская еда|Вегетарианская кухня|Вегетарианская еда
+en:Vegan|Vegetarian
+ru:Веганская кухня|Вегетарианская кухня
 bg:Веганско|Вегетарианско
 ar:مطبخ نباتي
 cs:Veganská kuchyně|Vegetariánská kuchyně
@@ -1469,39 +1469,39 @@ sk:Vegánske jedlá|Vegetariánske jedlá
 # he:עוף
 # sk:Kurča
 
-# cuisine-chinese
-# en:Chinese cuisine
-# ru:Китайская кухня
-# bg:Китайска кухня
-# ar:مطبخ صيني
-# cs:Čínská kuchyně
-# da:Kinesisk
-# nl:Chinees
-# fi:Kiinalainen keittiö
-# fr:Cuisine chinoise
-# de:Chinesische Küche
-# hu:Kínai konyha
-# id:Masakan tionghoa
-# it:Cucina cinese
-# ja:中華料理
-# ko:중국식 음식
-# nb:Kinesisk mat
-# pl:Kuchnia chińska
-# pt:Cozinha chinesa
-# pt-BR:Cozinha chinesa
-# ro:Bucătărie chinez
-# es:Cocina china
-# eu:Txinako sukaldaritza
-# sv:Kinesisk mat
-# th:อาหารจีน
-# tr:Çin mutfağı
-# uk:Китайська кухня
-# vi:Ẩm thực trung quốc
-# zh-Hans:中国菜
-# zh-Hant:中華料理
-# el:Κινέζικη κουζίνα
-# he:מטבח סיני
-# sk:Čína
+cuisine-chinese
+en:Chinese cuisine
+ru:Китайская кухня
+bg:Китайска кухня
+ar:مطبخ صيني
+cs:Čínská kuchyně
+da:Kinesisk
+nl:Chinees
+fi:Kiinalainen keittiö
+fr:Cuisine chinoise
+de:Chinesische Küche
+hu:Kínai konyha
+id:Masakan tionghoa
+it:Cucina cinese
+ja:中華料理
+ko:중국식 음식
+nb:Kinesisk mat
+pl:Kuchnia chińska
+pt:Cozinha chinesa
+pt-BR:Cozinha chinesa
+ro:Bucătărie chinez
+es:Cocina china
+eu:Txinako sukaldaritza
+sv:Kinesisk mat
+th:อาหารจีน
+tr:Çin mutfağı
+uk:Китайська кухня
+vi:Ẩm thực trung quốc
+zh-Hans:中国菜
+zh-Hant:中華料理
+el:Κινέζικη κουζίνα
+he:מטבח סיני
+sk:Čína
 
 # cuisine-croatian
 # en:Croatian cuisine
@@ -1673,39 +1673,39 @@ sk:Vegánske jedlá|Vegetariánske jedlá
 # he:אכילה במסעדות יוקרה
 # sk:Exkluzívna reštaurácia
 
-# cuisine-french
-# en:French cuisine
-# ru:Французская кухня
-# bg:Френска кухня
-# ar:مطبخ فرنسي
-# cs:Francouzská kuchyně
-# da:Fransk
-# nl:Frans
-# fi:Ranskalainen keittiö
-# fr:Cuisine française
-# de:Französische Küche
-# hu:Francia konyha
-# id:Masakan prancis
-# it:Cucina francese
-# ja:フランス料理
-# ko:프랑스식 음식
-# nb:Fransk mat
-# pl:Kuchnia francuska
-# pt:Cozinha francesa
-# pt-BR:Cozinha francesa
-# ro:Bucătărie francez
-# es:Cocina francesa
-# eu:Frantziako sukaldaritza
-# sv:Fransk mat
-# th:อาหารฝรั่งเศส
-# tr:Fransız mutfağı
-# uk:Французька кухня
-# vi:Ẩm thực pháp
-# zh-Hans:法国菜
-# zh-Hant:法國料理
-# el:Γαλλική κουζίνα
-# he:מטבח צרפתי
-# sk:Francúzska kuchyňa
+cuisine-french
+en:French cuisine
+ru:Французская кухня
+bg:Френска кухня
+ar:مطبخ فرنسي
+cs:Francouzská kuchyně
+da:Fransk
+nl:Frans
+fi:Ranskalainen keittiö
+fr:Cuisine française
+de:Französische Küche
+hu:Francia konyha
+id:Masakan prancis
+it:Cucina francese
+ja:フランス料理
+ko:프랑스식 음식
+nb:Fransk mat
+pl:Kuchnia francuska
+pt:Cozinha francesa
+pt-BR:Cozinha francesa
+ro:Bucătărie francez
+es:Cocina francesa
+eu:Frantziako sukaldaritza
+sv:Fransk mat
+th:อาหารฝรั่งเศส
+tr:Fransız mutfağı
+uk:Французька кухня
+vi:Ẩm thực pháp
+zh-Hans:法国菜
+zh-Hant:法國料理
+el:Γαλλική κουζίνα
+he:מטבח צרפתי
+sk:Francúzska kuchyňa
 
 # cuisine-georgian
 # en:Georgian cuisine
@@ -2013,39 +2013,39 @@ sk:Vegánske jedlá|Vegetariánske jedlá
 # he:מטבח אירי
 # sk:Írska kuchyňa
 
-# cuisine-italian
-# en:Italian cuisine
-# ru:Итальянская кухня
-# bg:Италянска кухня
-# ar:مطبخ إيطالي
-# cs:Italská kuchyně
-# da:Italiensk
-# nl:Italiaans
-# fi:Italialainen keittiö
-# fr:Cuisine italienne
-# de:Italienische Küche
-# hu:Olasz konyha
-# id:Masakan italia
-# it:Cucina italiana
-# ja:イタリア料理
-# ko:이탈리아식 음식
-# nb:Italiensk mat
-# pl:Kuchnia włoska
-# pt:Cozinha italiana
-# pt-BR:Cozinha italiana
-# ro:Bucătărie italian
-# es:Cocina italiana
-# eu:Sukaldaritza italiarra
-# sv:Italiensk mat
-# th:อาหารอิตาเลียน
-# tr:Italyan mutfağı
-# uk:Італійська кухня
-# vi:Ẩm thực ý
-# zh-Hans:意大利菜
-# zh-Hant:義大利料理
-# el:Ιταλική κουζίνα
-# he:מטבח איטלקי
-# sk:Talianska kuchyňa
+cuisine-italian
+en:Italian cuisine
+ru:Итальянская кухня
+bg:Италянска кухня
+ar:مطبخ إيطالي
+cs:Italská kuchyně
+da:Italiensk
+nl:Italiaans
+fi:Italialainen keittiö
+fr:Cuisine italienne
+de:Italienische Küche
+hu:Olasz konyha
+id:Masakan italia
+it:Cucina italiana
+ja:イタリア料理
+ko:이탈리아식 음식
+nb:Italiensk mat
+pl:Kuchnia włoska
+pt:Cozinha italiana
+pt-BR:Cozinha italiana
+ro:Bucătărie italian
+es:Cocina italiana
+eu:Sukaldaritza italiarra
+sv:Italiensk mat
+th:อาหารอิตาเลียน
+tr:Italyan mutfağı
+uk:Італійська кухня
+vi:Ẩm thực ý
+zh-Hans:意大利菜
+zh-Hant:義大利料理
+el:Ιταλική κουζίνα
+he:מטבח איטלקי
+sk:Talianska kuchyňa
 
 # cuisine-italian_pizza
 # en:Italian Pizza
