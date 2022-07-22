@@ -14,11 +14,8 @@
 #include "search/mode.hpp"
 #include "search/model.hpp"
 #include "search/mwm_context.hpp"
-#include "search/nested_rects_cache.hpp"
 #include "search/postcode_points.hpp"
-#include "search/pre_ranking_info.hpp"
 #include "search/query_params.hpp"
-#include "search/ranking_utils.hpp"
 #include "search/streets_matcher.hpp"
 #include "search/token_range.hpp"
 #include "search/tracer.hpp"
@@ -27,19 +24,13 @@
 
 #include "storage/country_info_getter.hpp"
 
-#include "coding/compressed_bit_vector.hpp"
-
 #include "geometry/point2d.hpp"
 #include "geometry/rect2d.hpp"
 
 #include "base/cancellable.hpp"
 #include "base/dfa_helpers.hpp"
 #include "base/levenshtein_dfa.hpp"
-#include "base/string_utils.hpp"
 
-#include <cstddef>
-#include <cstdint>
-#include <limits>
 #include <map>
 #include <memory>
 #include <optional>
@@ -318,7 +309,8 @@ private:
   LocalitiesCaches & m_localitiesCaches;
   HotelsCache m_hotelsCache;
   FoodCache m_foodCache;
-  cuisine_filter::CuisineFilter m_cuisineFilter;
+  using CuisineFilterT = cuisine_filter::CuisineFilter;
+  CuisineFilterT m_cuisineFilter;
 
   base::Cancellable const & m_cancellable;
 

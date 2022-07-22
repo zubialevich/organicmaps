@@ -2,8 +2,6 @@
 
 #include "search/bookmarks/processor.hpp"
 #include "search/bookmarks/types.hpp"
-#include "search/categories_cache.hpp"
-#include "search/categories_set.hpp"
 #include "search/cities_boundaries_table.hpp"
 #include "search/common.hpp"
 #include "search/emitter.hpp"
@@ -11,10 +9,7 @@
 #include "search/pre_ranker.hpp"
 #include "search/ranker.hpp"
 #include "search/search_params.hpp"
-#include "search/search_trie.hpp"
 #include "search/suggest.hpp"
-#include "search/token_slice.hpp"
-#include "search/utils.hpp"
 
 #include "ge0/geo_url_parser.hpp"
 
@@ -89,7 +84,7 @@ public:
 
   void SearchBookmarks(bookmarks::GroupId const & groupId);
 
-  void InitParams(QueryParams & params) const;
+  void InitParams(QueryParams & params);
 
   void InitGeocoder(Geocoder::Params & geocoderParams, SearchParams const & searchParams);
   void InitPreRanker(Geocoder::Params const & geocoderParams, SearchParams const & searchParams);
@@ -130,12 +125,6 @@ protected:
   void SearchByFeatureId();
 
   Locales GetCategoryLocales() const;
-
-  template <typename ToDo>
-  void ForEachCategoryType(StringSliceBase const & slice, ToDo && toDo) const;
-
-  template <typename ToDo>
-  void ForEachCategoryTypeFuzzy(StringSliceBase const & slice, ToDo && toDo) const;
 
   m2::PointD GetPivotPoint(bool viewportSearch) const;
   m2::RectD GetPivotRect(bool viewportSearch) const;

@@ -4,15 +4,12 @@
 
 #include "search/common.hpp"
 #include "search/cuisine_filter.hpp"
-#include "search/dummy_rank_table.hpp"
 #include "search/geometry_utils.hpp"
 #include "search/intermediate_result.hpp"
 #include "search/latlon_match.hpp"
 #include "search/mode.hpp"
 #include "search/postcode_points.hpp"
-#include "search/pre_ranking_info.hpp"
 #include "search/query_params.hpp"
-#include "search/ranking_info.hpp"
 #include "search/ranking_utils.hpp"
 #include "search/search_index_values.hpp"
 #include "search/search_params.hpp"
@@ -26,27 +23,19 @@
 #include "indexer/data_source.hpp"
 #include "indexer/feature.hpp"
 #include "indexer/feature_algo.hpp"
-#include "indexer/feature_covering.hpp"
-#include "indexer/feature_data.hpp"
-#include "indexer/feature_impl.hpp"
 #include "indexer/feature_utils.hpp"
 #include "indexer/features_vector.hpp"
 #include "indexer/ftypes_matcher.hpp"
 #include "indexer/mwm_set.hpp"
 #include "indexer/postcodes_matcher.hpp"
-#include "indexer/scales.hpp"
 #include "indexer/search_delimiters.hpp"
 #include "indexer/search_string_utils.hpp"
 #include "indexer/trie_reader.hpp"
 
-#include "platform/mwm_traits.hpp"
-#include "platform/mwm_version.hpp"
 #include "platform/preferred_languages.hpp"
 
 #include "coding/compressed_bit_vector.hpp"
-#include "coding/reader_wrapper.hpp"
 #include "coding/string_utf8_multilang.hpp"
-#include "coding/url.hpp"
 
 #include "geometry/latlon.hpp"
 #include "geometry/mercator.hpp"
@@ -54,25 +43,21 @@
 #include "base/assert.hpp"
 #include "base/buffer_vector.hpp"
 #include "base/logging.hpp"
-#include "base/macros.hpp"
-#include "base/scope_guard.hpp"
 #include "base/stl_helpers.hpp"
 #include "base/string_utils.hpp"
 
 #include <algorithm>
-#include <cctype>
 #include <memory>
 #include <optional>
 #include <set>
 #include <sstream>
-#include <utility>
 
 #include "3party/open-location-code/openlocationcode.h"
 
-using namespace std;
-
 namespace search
 {
+using namespace std;
+
 namespace
 {
 enum LanguageTier
@@ -340,7 +325,10 @@ void Processor::SetQuery(string const & query, bool categorialRequest /* = false
     // Assign tokens and prefix to scorer.
     m_keywordsScorer.SetKeywords(m_tokens.data(), m_tokens.size(), m_prefix);
 
-    ForEachCategoryType(tokenSlice, [&](size_t, uint32_t t) { m_preferredTypes.push_back(t); });
+    ForEachCategoryType(tokenSlice, locales, m_categories, [&](size_t, uint32_t t)
+    {
+      m_preferredTypes.push_back(t);
+    });
   }
 
   base::SortUnique(m_preferredTypes);
@@ -559,19 +547,6 @@ Locales Processor::GetCategoryLocales() const
     result.Insert(static_cast<uint64_t>(m_inputLocaleCode));
 
   return result;
-}
-
-template <typename ToDo>
-void Processor::ForEachCategoryType(StringSliceBase const & slice, ToDo && toDo) const
-{
-  ::search::ForEachCategoryType(slice, GetCategoryLocales(), m_categories, forward<ToDo>(toDo));
-}
-
-template <typename ToDo>
-void Processor::ForEachCategoryTypeFuzzy(StringSliceBase const & slice, ToDo && toDo) const
-{
-  ::search::ForEachCategoryTypeFuzzy(slice, GetCategoryLocales(), m_categories,
-                                     forward<ToDo>(toDo));
 }
 
 void Processor::Search(SearchParams const & params)
@@ -797,7 +772,7 @@ void Processor::SearchBookmarks(bookmarks::GroupId const & groupId)
   m_bookmarksProcessor.Finish(IsCancelled());
 }
 
-void Processor::InitParams(QueryParams & params) const
+void Processor::InitParams(QueryParams & params)
 {
   params.SetQuery(m_query);
 
@@ -822,12 +797,47 @@ void Processor::InitParams(QueryParams & params) const
   }
   else
   {
-    // todo(@m, @y). Shall we match prefix tokens for categories?
-    ForEachCategoryTypeFuzzy(tokenSlice, [&c, &params](size_t i, uint32_t t)
+    /// @todo(@m, @y). Shall we match prefix tokens for categories?
+    /// VNG: Yes, I think we should match categories and cuisines in general search.
+
+    set<size_t> matchedCategories;
+    auto const locales = GetCategoryLocales();
+    ForEachCategoryTypeFuzzy(tokenSlice, locales, m_categories, [&](size_t i, uint32_t t)
     {
-      uint32_t const index = c.GetIndexForType(t);
-      params.GetTypeIndices(i).push_back(index);
+      matchedCategories.insert(i);
+      //LOG(LDEBUG, ("CAT:", i, c.GetFullObjectName(t)));
+      params.GetTypeIndices(i).push_back(c.GetIndexForType(t));
     });
+
+    /// @todo Cuisines partial (fuzzy) match is a bit naive here. Should rewrite categrioes/cuisines routine
+    /// (and even all tokens matching) to make it uniform and better.
+    set<size_t> matchedCuisines;
+    ForEachCategoryType(tokenSlice, locales, GetDefaultCuisineCategories(), [&](size_t i, uint32_t t)
+    {
+      // Process cuisine-like tokes only if they were *not* processed as categories above.
+      if (matchedCategories.count(i) == 0)
+      {
+        //LOG(LDEBUG, ("CUISINE:", i, c.GetFullObjectName(t)));
+        m_cuisineTypes.push_back(t);
+        matchedCuisines.insert(i);
+      }
+    });
+
+    if (!matchedCuisines.empty())
+    {
+      base::SortUnique(m_cuisineTypes);
+
+      // Assign preferred eat types if we have *any* cuisine-like token.
+      m_preferredTypes = ftypes::IsEatChecker::Instance().GetTypes();
+      base::SortUnique(m_preferredTypes);
+
+      for (size_t i : matchedCuisines)
+      {
+        auto & indices = params.GetTypeIndices(i);
+        for (uint32_t t : m_preferredTypes)
+          indices.push_back(c.GetIndexForType(t));
+      }
+    }
   }
 
   // Remove all type indices for streets, as they're considired individually.

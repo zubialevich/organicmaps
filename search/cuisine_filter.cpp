@@ -1,28 +1,26 @@
 #include "search/cuisine_filter.hpp"
 
-#include "indexer/cuisines.hpp"
 #include "indexer/feature.hpp"
-#include "indexer/feature_meta.hpp"
 #include "indexer/ftypes_matcher.hpp"
 
 #include "platform/mwm_traits.hpp"
 
-#include "base/assert.hpp"
 #include "base/checked_cast.hpp"
 
 #include <algorithm>
-
-using namespace std;
 
 namespace search
 {
 namespace cuisine_filter
 {
+using namespace std;
+
 // Description -------------------------------------------------------------------------------------
 Description::Description(FeatureType & ft)
 {
   m_types.clear();
-  ft.ForEachType([this](uint32_t t) {
+  ft.ForEachType([this](uint32_t t)
+  {
     if (ftypes::IsCuisineChecker::Instance()(t))
       m_types.push_back(t);
   });
@@ -36,10 +34,10 @@ CuisineFilter::ScopedFilter::ScopedFilter(MwmSet::MwmId const & mwmId,
   sort(m_types.begin(), m_types.end());
 }
 
-bool CuisineFilter::ScopedFilter::Matches(FeatureID const & fid) const
+CuisineFilter::Result CuisineFilter::ScopedFilter::Matches(FeatureID const & fid) const
 {
   if (fid.m_mwmId != m_mwmId)
-    return false;
+    return ERROR;
 
   auto it = lower_bound(
       m_descriptions.begin(), m_descriptions.end(), make_pair(fid.m_index, Description{}),
@@ -47,14 +45,14 @@ bool CuisineFilter::ScopedFilter::Matches(FeatureID const & fid) const
         return lhs.first < rhs.first;
       });
   if (it == m_descriptions.end() || it->first != fid.m_index)
-    return false;
+    return NOT_EAT;
 
   for (auto const t : it->second.m_types)
   {
     if (binary_search(m_types.begin(), m_types.end(), t))
-      return true;
+      return MATCHED;
   }
-  return false;
+  return NOT_MATCHED;
 }
 
 // CuisineFilter ------------------------------------------------------------------------------------
@@ -82,7 +80,8 @@ CuisineFilter::Descriptions const & CuisineFilter::GetDescriptions(MwmContext co
 
   auto const food = m_food.Get(context);
   auto & descriptions = m_descriptions[mwmId];
-  food.ForEach([&descriptions, &context](uint64_t bit) {
+  food.ForEach([&descriptions, &context](uint64_t bit)
+  {
     auto const id = base::asserted_cast<uint32_t>(bit);
     auto ft = context.GetFeature(id);
     if (ft)

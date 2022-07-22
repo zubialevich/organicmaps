@@ -29,13 +29,15 @@ class CuisineFilter
 public:
   using Descriptions = std::vector<std::pair<uint32_t, Description>>;
 
+  enum Result { ERROR, NOT_EAT, NOT_MATCHED, MATCHED };
+
   class ScopedFilter
   {
   public:
     ScopedFilter(MwmSet::MwmId const & mwmId, Descriptions const & descriptions,
                  std::vector<uint32_t> const & types);
 
-    bool Matches(FeatureID const & fid) const;
+    Result Matches(FeatureID const & fid) const;
 
   private:
     MwmSet::MwmId const m_mwmId;

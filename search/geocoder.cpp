@@ -13,22 +13,17 @@
 #include "search/tracer.hpp"
 #include "search/utils.hpp"
 
-#include "indexer/classificator.hpp"
 #include "indexer/data_source.hpp"
 #include "indexer/feature_decl.hpp"
-#include "indexer/feature_impl.hpp"
 #include "indexer/ftypes_matcher.hpp"
 #include "indexer/postcodes_matcher.hpp"
 #include "indexer/rank_table.hpp"
-#include "indexer/search_delimiters.hpp"
 #include "indexer/search_string_utils.hpp"
 #include "indexer/utils.hpp"
 
 #include "storage/country_info_getter.hpp"
 
 #include "coding/string_utf8_multilang.hpp"
-
-#include "platform/preferred_languages.hpp"
 
 #include "geometry/mercator.hpp"
 
@@ -37,8 +32,7 @@
 #include "base/control_flow.hpp"
 #include "base/logging.hpp"
 #include "base/macros.hpp"
-#include "base/pprof.hpp"
-#include "base/random.hpp"
+//#include "base/pprof.hpp"
 #include "base/scope_guard.hpp"
 #include "base/stl_helpers.hpp"
 
@@ -54,11 +48,11 @@
 #include "base/timer.hpp"
 #endif
 
+namespace search
+{
 using namespace std;
 using namespace strings;
 
-namespace search
-{
 namespace
 {
 size_t constexpr kMaxNumCities = 10;
@@ -1672,8 +1666,20 @@ void Geocoder::EmitResult(BaseContext & ctx, MwmSet::MwmId const & mwmId, uint32
   if (matchedFraction <= 0.1)
     return;
 
-  if (ctx.m_cuisineFilter && !ctx.m_cuisineFilter->Matches(id))
-    return;
+  if (ctx.m_cuisineFilter)
+  {
+    auto const res = ctx.m_cuisineFilter->Matches(id);
+    ASSERT(res != CuisineFilterT::ERROR, ());
+    bool const isCategorial = m_params.IsCategorialRequest();
+
+    // Skip any result that not match eat + cuisine in categorial search.
+    if (isCategorial && res != CuisineFilterT::MATCHED)
+      return;
+
+    // Skip any eat result that not match cuisine, if we have any in query.
+    if (!isCategorial && res == CuisineFilterT::NOT_MATCHED)
+      return;
+  }
 
   if (m_params.m_tracer)
     TraceResult(*m_params.m_tracer, ctx, mwmId, ftId, type, tokenRange);

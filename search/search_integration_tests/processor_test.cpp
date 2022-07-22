@@ -18,7 +18,6 @@
 #include "editor/editable_data_source.hpp"
 
 #include "indexer/feature.hpp"
-#include "indexer/ftypes_matcher.hpp"
 
 #include "geometry/mercator.hpp"
 #include "geometry/point2d.hpp"
@@ -1509,28 +1508,64 @@ UNIT_CLASS_TEST(ProcessorTest, CuisineTest)
 {
   string const countryName = "Wonderland";
 
-  TestPOI vegan({1.0, 1.0}, "Useless name", "en");
+  TestPOI vegan({0.0, 0.0}, "xxx", "en");
   vegan.SetTypes({{"amenity", "cafe"}, {"cuisine", "vegan"}});
 
-  TestPOI pizza({1.0, 1.0}, "Useless name", "en");
+  TestPOI pizza({1.0, 1.0}, "yyy", "en");
   pizza.SetTypes({{"amenity", "bar"}, {"cuisine", "pizza"}});
 
-  auto countryId = BuildCountry(countryName, [&](TestMwmBuilder & builder) {
+  TestPOI restaurant({-1.0, -1.0}, "zzz", "it");
+  restaurant.SetTypes({{"amenity", "restaurant"}, {"cuisine", "italian"}});
+
+  TestPOI steak({2.0, 2.0}, "ыыы", "ru");
+  steak.SetTypes({{"amenity", "restaurant"}, {"cuisine", "steak_house"}});
+
+  auto countryId = BuildCountry(countryName, [&](TestMwmBuilder & builder)
+  {
     builder.Add(vegan);
     builder.Add(pizza);
+    builder.Add(restaurant);
+    builder.Add(steak);
   });
 
-  SetViewport(m2::RectD(-1, -1, 1, 1));
+  SetViewport(m2::RectD(-3, -3, 3, 3));
+
+  {
+    Rules rules{ExactMatch(countryId, vegan)};
+    TEST(CategoryMatch("vegan", rules, "en"), ());
+    TEST(CategoryMatch("веганская кухня", rules, "ru"), ());
+  }
+
+  {
+    Rules rules{ExactMatch(countryId, restaurant)};
+    TEST(CategoryMatch("italian cuisine", rules, "en"), ());
+    TEST(CategoryMatch("итальянская кухня", rules, "ru"), ());
+  }
 
   {
     Rules rules{ExactMatch(countryId, vegan)};
     TEST(ResultsMatch("vegan ", "en", rules), ());
+    TEST(ResultsMatch("веганская", "ru", rules), ());
+  }
+
+  {
+    Rules rules{ExactMatch(countryId, steak)};
+    // Doesn't work because matched as "steam" (sauna) category :)
+    //TEST(ResultsMatch("steak", "en", rules), ());
+    TEST(ResultsMatch("стейк", "ru", rules), ());
   }
 
   {
     Rules rules{ExactMatch(countryId, pizza)};
     TEST(ResultsMatch("pizza ", "en", rules), ());
-    TEST(ResultsMatch("pizzeria ", "en", rules), ());
+    TEST(ResultsMatch("pizzeria", "pl", rules), ());
+    TEST(ResultsMatch("pizza", "vi", rules), ()); // Cuisine's name is "Bánh pizza"
+  }
+
+  {
+    Rules rules{ExactMatch(countryId, restaurant)};
+    TEST(ResultsMatch("italian ", "en", rules), ());
+    TEST(ResultsMatch("итальянская", "ru", rules), ());
   }
 }
 
@@ -3027,32 +3062,53 @@ UNIT_CLASS_TEST(ProcessorTest, TestRankingInfo_MultipleOldNames)
   checkResult("Петроград", "Санкт-Петербург (Петроград)");
 }
 
-/// @todo We are not ready for this test yet.
-/*
-UNIT_CLASS_TEST(ProcessorTest, BurgerStreet)
+UNIT_CLASS_TEST(ProcessorTest, CuisineStreet)
 {
-  string const countryName = "Wonderland";
+  TestPOI restaurant({1.0, 1.0}, "xxx", "en");
+  restaurant.SetTypes({{"amenity", "restaurant"}, {"cuisine", "italian"}});
 
-  TestPOI burger({1.0, 1.0}, "Dummy", "en");
+  TestPOI burger({3.0, 3.0}, "ыыы", "ru");
   burger.SetTypes({{"amenity", "fast_food"}, {"cuisine", "burger"}});
 
-  TestStreet street({{2.0, 2.0}, {3.0, 3.0}}, "Burger street", "en");
-  street.SetHighwayType("residential");
+  TestStreet italianStreet({{2.0, 2.0}, {3.0, 3.0}}, "Italian street", "en");
+  italianStreet.SetHighwayType("residential");
 
-  auto countryId = BuildCountry(countryName, [&](TestMwmBuilder & builder)
+  TestStreet burgerStreet({{4.0, 4.0}, {5.0, 5.0}}, "Burger street", "en");
+  burgerStreet.SetHighwayType("footway");
+
+  auto countryId = BuildCountry("Wonderland", [&](TestMwmBuilder & builder)
   {
+    builder.Add(restaurant);
     builder.Add(burger);
-    builder.Add(street);
+    builder.Add(italianStreet);
+    builder.Add(burgerStreet);
   });
 
   SetViewport(m2::RectD(0, 0, 3, 3));
 
   {
-    Rules rules{ExactMatch(countryId, burger), ExactMatch(countryId, street)};
+    Rules rules{ExactMatch(countryId, restaurant), ExactMatch(countryId, italianStreet)};
+    TEST(ResultsMatch("italian", rules), ());
+    // Because 'italian' matches street and 'food' matches restaurant and tokens are processed separately?
+    TEST(ResultsMatch("italian food", rules), ());
+  }
+
+  {
+    /// @todo Because we treat full cuisine name as 'categorial' search.
+    Rules rules{ExactMatch(countryId, burger)};
     TEST(ResultsMatch("burger", rules), ());
   }
+
+  {
+    Rules rules{ExactMatch(countryId, italianStreet)};
+    TEST(ResultsMatch("italian st", rules), ());
+  }
+
+  {
+    Rules rules{ExactMatch(countryId, burgerStreet)};
+    TEST(ResultsMatch("burger street", rules), ());
+  }
 }
-*/
 
 UNIT_CLASS_TEST(ProcessorTest, PostCategoryTest)
 {
