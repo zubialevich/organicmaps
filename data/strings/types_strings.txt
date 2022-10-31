@@ -10192,6 +10192,8 @@
   [type.highway.trunk]
     en = Trunk Road
     ar = شارع وطني
+    be = Аўтамагістраль
+    bg = Автомагистрала
     cs = Ulice
     da = Gade
     de = Schnellstraße
@@ -10213,12 +10215,12 @@
     pt = Via rápida
     pt-BR = Via expressa
     ro = Stradă
-    ru = Трасса
+    ru = Автомагистраль
     sk = Ulica
     sv = Gata
     th = ถนน
     tr = Devlet Yolu
-    uk = Траса
+    uk = Автомагістраль
     vi = Phố
     zh-Hans = 干线道路
     zh-Hant = 主幹道
@@ -10234,10 +10236,12 @@
   [type.highway.trunk_link]
     ref = type.highway.trunk
     en = Trunk Road Ramp
+    be = З'езд з аўтамагістралі
+    bg = Изход от магистрала
     mr = राष्ट्रीय महामार्ग उतार
     pt-BR = Saída de rodovia
-    ru = Съезд с трассы
-    uk = З'їзд з траси
+    ru = Съезд с автомагистрали
+    uk = З'їзд із автомагістралі
     zh-Hans = 干线道路连接路
     zh-Hant = 主幹道連接路
 
