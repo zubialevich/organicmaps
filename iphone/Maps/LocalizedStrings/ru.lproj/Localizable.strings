@@ -2075,7 +2075,7 @@
 
 "type.highway.traffic_signals" = "Светофор";
 
-"type.highway.trunk" = "Трасса";
+"type.highway.trunk" = "Автомагистраль";
 
 /* These translations are used for all type.highway.*.bridge. */
 "type.highway.trunk.bridge" = "Мост";
@@ -2083,7 +2083,7 @@
 /* These translations are used for all type.highway.*.tunnel. */
 "type.highway.trunk.tunnel" = "Тоннель";
 
-"type.highway.trunk_link" = "Съезд с трассы";
+"type.highway.trunk_link" = "Съезд с автомагистрали";
 
 /* These translations are used for all type.highway.*.bridge. */
 "type.highway.trunk_link.bridge" = "Мост";
@@ -2127,7 +2127,7 @@
 
 "type.area_highway.track" = "Грунтовка";
 
-"type.area_highway.trunk" = "Трасса";
+"type.area_highway.trunk" = "Автомагистраль";
 
 "type.area_highway.unclassified" = "Небольшая дорога";
 
