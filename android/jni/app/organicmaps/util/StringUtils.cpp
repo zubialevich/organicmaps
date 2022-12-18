@@ -1,4 +1,5 @@
 #include "app/organicmaps/core/jni_helper.hpp"
+#include "app/organicmaps/core/jni_java_methods.hpp"
 
 #include "indexer/search_string_utils.hpp"
 
@@ -12,11 +13,7 @@ namespace
 {
 jobject MakeJavaPair(JNIEnv * env, std::string const & first, std::string const & second)
 {
-  static jclass const pairClass = jni::GetGlobalClassRef(env, "android/util/Pair");
-  static jmethodID const pairCtor =
-      jni::GetConstructorID(env, pairClass, "(Ljava/lang/Object;Ljava/lang/Object;)V");
-  return env->NewObject(pairClass, pairCtor, jni::ToJavaString(env, first),
-                        jni::ToJavaString(env, second));
+  return jni::PairBuilder::Instance(env).Create(env, jni::ToJavaString(env, first), jni::ToJavaString(env, second));
 }
 }  // namespace
 
