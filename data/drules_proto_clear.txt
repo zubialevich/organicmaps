@@ -34917,6 +34917,16 @@ cont {
 cont {
   name: "isoline-step_100"
   element {
+    scale: 12
+    lines {
+      width: 0.9
+      color: 3007930697
+      priority: 1403
+      join: BEVELJOIN
+      cap: BUTTCAP
+    }
+  }
+  element {
     scale: 13
     lines {
       width: 1.0
@@ -34932,6 +34942,13 @@ cont {
       color: 1716085065
       priority: 1403
       cap: BUTTCAP
+    }
+    path_text {
+      primary {
+        height: 9
+        color: 4809033
+      }
+      priority: 16403
     }
   }
   element {
@@ -35159,6 +35176,15 @@ cont {
 cont {
   name: "isoline-step_50"
   element {
+    scale: 14
+    lines {
+      width: 0.9
+      color: 3008787798
+      priority: 1403
+      cap: BUTTCAP
+    }
+  }
+  element {
     scale: 15
     lines {
       width: 1.0
@@ -35173,6 +35199,13 @@ cont {
       width: 1.0
       color: 2153149782
       priority: 1403
+    }
+    path_text {
+      primary {
+        height: 9
+        color: 5666134
+      }
+      priority: 16403
     }
   }
   element {
@@ -79302,6 +79335,104 @@ cont {
     scale: 19
     symbol {
       name: "subway-ubahn-s"
+      priority: 16913
+    }
+    caption {
+      primary {
+        height: 13
+        color: 2236962
+        stroke_color: 452984831
+        offset_y: 1
+        is_optional: true
+      }
+      secondary {
+        height: 11
+        color: 2236962
+        stroke_color: 452984831
+        offset_y: 1
+        text: "int_name"
+        is_optional: true
+      }
+      priority: 15913
+    }
+  }
+}
+cont {
+  name: "railway-subway_entrance-bilbao"
+  element {
+    scale: 16
+    caption {
+      primary {
+        height: 10
+        color: 2236962
+        stroke_color: 1728053247
+        is_optional: true
+      }
+      secondary {
+        height: 10
+        color: 2236962
+        stroke_color: 1728053247
+        offset_y: 1
+        text: "int_name"
+        is_optional: true
+      }
+      priority: 15913
+    }
+  }
+  element {
+    scale: 17
+    symbol {
+      name: "subway-bilbao-s"
+      priority: 16913
+    }
+    caption {
+      primary {
+        height: 13
+        color: 2236962
+        stroke_color: 452984831
+        offset_y: 1
+        is_optional: true
+      }
+      secondary {
+        height: 11
+        color: 2236962
+        stroke_color: 452984831
+        offset_y: 1
+        text: "int_name"
+        is_optional: true
+      }
+      priority: 15913
+    }
+  }
+  element {
+    scale: 18
+    symbol {
+      name: "subway-bilbao-s"
+      priority: 16913
+    }
+    caption {
+      primary {
+        height: 13
+        color: 2236962
+        stroke_color: 452984831
+        offset_y: 1
+        is_optional: true
+      }
+      secondary {
+        height: 11
+        color: 2236962
+        stroke_color: 452984831
+        offset_y: 1
+        text: "int_name"
+        is_optional: true
+      }
+      priority: 15913
+    }
+  }
+  element {
+    scale: 19
+    symbol {
+      name: "subway-bilbao-s"
       priority: 16913
     }
     caption {
