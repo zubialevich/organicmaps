@@ -25,6 +25,7 @@
   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
   <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+  <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
   <uses-permission android:name="android.permission.INTERNET"/>
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
   <!--
@@ -724,6 +725,18 @@
       android:name="app.organicmaps.background.OsmUploadService"
       android:permission="android.permission.BIND_JOB_SERVICE"
       android:exported="false"/>
+
+    <service
+        android:name=".routing.NavigationService"
+        android:foregroundServiceType="location"
+        android:exported="true"
+        android:enabled="true"
+        android:stopWithTask="false"
+        >
+      <intent-filter>
+        <action android:name=".routing.NavigationService" />
+      </intent-filter>
+    </service>
 
     <!-- Catches app upgraded intent -->
     <receiver

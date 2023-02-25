@@ -4,8 +4,10 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -14,13 +16,17 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
+import androidx.annotation.UiThread;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
@@ -98,6 +104,9 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Stack;
 
+import static android.Manifest.permission.ACCESS_BACKGROUND_LOCATION;
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.Manifest.permission.POST_NOTIFICATIONS;
 import static app.organicmaps.widget.placepage.PlacePageButtons.PLACEPAGE_MORE_MENU_ID;
 
 public class MwmActivity extends BaseMwmFragmentActivity
@@ -195,6 +204,9 @@ public class MwmActivity extends BaseMwmFragmentActivity
 
   @Nullable
   private WindowInsetsCompat mCurrentWindowInsets;
+
+  @NonNull
+  private ActivityResultLauncher<String[]> mPermissionRequest;
 
   public interface LeftAnimationTrackListener
   {
@@ -396,6 +408,9 @@ public class MwmActivity extends BaseMwmFragmentActivity
     boolean isLaunchByDeepLink = getIntent().getBooleanExtra(EXTRA_LAUNCH_BY_DEEP_LINK, false);
     initViews(isLaunchByDeepLink);
     updateViewsInsets();
+
+    mPermissionRequest = registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(),
+        this::onPermissionsResult);
 
     boolean isConsumed = savedInstanceState == null && processIntent(getIntent());
     boolean isFirstLaunch = Counters.isFirstLaunch(this);
@@ -1023,8 +1038,9 @@ public class MwmActivity extends BaseMwmFragmentActivity
   @Override
   protected void onPause()
   {
-    if (!RoutingController.get().isNavigating())
-      TtsPlayer.INSTANCE.stop();
+    // TODO: move to NavigationService.
+    //if (!RoutingController.get().isNavigating())
+    //  TtsPlayer.INSTANCE.stop();
     if (mOnmapDownloader != null)
       mOnmapDownloader.onPause();
     mNavigationController.onActivityPaused(this);
@@ -1071,6 +1087,8 @@ public class MwmActivity extends BaseMwmFragmentActivity
     mNavigationController.destroy();
     //TrafficManager.INSTANCE.detachAll();
     mPlacePageController.destroy();
+    mPermissionRequest.unregister();
+    mPermissionRequest = null;
   }
 
   @Override
@@ -1516,6 +1534,31 @@ public class MwmActivity extends BaseMwmFragmentActivity
     mNavigationController.start(this);
     initNavigationButtons(MapButtonsController.LayoutMode.navigation);
     refreshLightStatusBar();
+
+    if (!LocationHelper.INSTANCE.isActive())
+      LocationHelper.INSTANCE.start();
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+    {
+      if (ActivityCompat.checkSelfPermission(this, ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED)
+        Logger.i(TAG, ACCESS_BACKGROUND_LOCATION + " permission is granted");
+      else
+      {
+        Logger.w(TAG, "Requesting " + ACCESS_BACKGROUND_LOCATION + " permission");
+        mPermissionRequest.launch(new String[]{ACCESS_BACKGROUND_LOCATION});
+      }
+    }
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+    {
+      if (ActivityCompat.checkSelfPermission(this, POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED)
+        Logger.i(TAG, POST_NOTIFICATIONS + " permission is granted");
+      else
+      {
+        Logger.w(TAG, "Requesting " + POST_NOTIFICATIONS + " permission");
+        mPermissionRequest.launch(new String[]{POST_NOTIFICATIONS});
+      }
+    }
   }
 
   @Override
@@ -1852,5 +1895,18 @@ public class MwmActivity extends BaseMwmFragmentActivity
     closePlacePage();
     RoutingOptions.addOption(roadType);
     rebuildLastRouteInternal();
+  }
+
+  @UiThread
+  private void onPermissionsResult(java.util.Map<String, Boolean> permissions)
+  {
+    Logger.d(TAG);
+    for (java.util.Map.Entry<String, Boolean> entry : permissions.entrySet())
+    {
+      if (entry.getValue())
+        Logger.i(TAG, entry.getKey() + " permission is granted");
+      else
+        Logger.w(TAG, entry.getKey() + " permission is refused");
+    }
   }
 }

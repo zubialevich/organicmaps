@@ -3,6 +3,7 @@ package app.organicmaps.routing;
 import static androidx.core.app.NotificationCompat.Builder;
 
 import android.app.ActivityManager;
+import android.app.ForegroundServiceStartNotAllowedException;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -19,6 +20,7 @@ import android.widget.RemoteViews;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 import app.organicmaps.Framework;
@@ -94,8 +96,12 @@ public class NavigationService extends Service
       CharSequence name = getString(R.string.app_name);
       // Create the channel for the notification
       NotificationChannel mChannel =
-          new NotificationChannel(CHANNEL_ID, name, NotificationManager.IMPORTANCE_DEFAULT);
-
+          new NotificationChannel(CHANNEL_ID, name, NotificationManager.IMPORTANCE_LOW);
+      // Make things less annoying.
+      mChannel.enableVibration(false);
+      mChannel.enableLights(false);
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+        mChannel.setAllowBubbles(false);
       mNotificationManager.createNotificationChannel(mChannel);
     }
   }
@@ -172,12 +178,29 @@ public class NavigationService extends Service
     return true;
   }
 
+  @RequiresApi(api = Build.VERSION_CODES.S)
+  private void startForegroundS(int id, Notification notification)
+  {
+    try
+    {
+      startForeground(id, notification);
+      Logger.w(TAG, "ForegroundService is allowed");
+    }
+    catch (ForegroundServiceStartNotAllowedException e)
+    {
+      Logger.e(TAG, "Oops! ForegroundService is not allowed", e);
+    }
+  }
+
   public void doForeground()
   {
     if(!serviceIsRunningInForeground(this))
     {
       Logger.i(TAG, "Starting foreground service");
-      startForeground(NOTIFICATION_ID, getNotification());
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+        startForegroundS(NOTIFICATION_ID, getNotification());
+      else
+        startForeground(NOTIFICATION_ID, getNotification());
     }
   }
 
