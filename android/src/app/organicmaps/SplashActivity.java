@@ -2,6 +2,7 @@ package app.organicmaps;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static app.organicmaps.location.LocationState.LOCATION_TAG;
 
 import android.app.Activity;
 import android.content.Context;
@@ -168,8 +169,7 @@ public class SplashActivity extends AppCompatActivity implements BaseActivity
          ActivityCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED))
     {
       LocationHelper.INSTANCE.onEnteredIntoFirstRun();
-      if (!LocationHelper.INSTANCE.isActive())
-        LocationHelper.INSTANCE.start();
+      LocationHelper.INSTANCE.start();
     }
 
     processNavigation();

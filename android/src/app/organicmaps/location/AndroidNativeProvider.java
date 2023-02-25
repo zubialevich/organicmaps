@@ -1,5 +1,7 @@
 package app.organicmaps.location;
 
+import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static app.organicmaps.util.concurrency.UiThread.runLater;
 
 import android.content.Context;
@@ -9,6 +11,7 @@ import android.os.Bundle;
 import android.os.Looper;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresPermission;
 import androidx.core.location.LocationListenerCompat;
 import androidx.core.location.LocationManagerCompat;
 import androidx.core.location.LocationRequestCompat;
@@ -18,7 +21,6 @@ import app.organicmaps.util.LocationUtils;
 import app.organicmaps.util.log.Logger;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 class AndroidNativeProvider extends BaseLocationProvider
@@ -74,9 +76,9 @@ class AndroidNativeProvider extends BaseLocationProvider
       throw new IllegalStateException("Can't get LOCATION_SERVICE");
   }
 
-  @SuppressWarnings("MissingPermission")
   // A permission is checked externally
   @Override
+  @RequiresPermission(anyOf = {ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION})
   public void start(long interval)
   {
     Logger.d(TAG);
