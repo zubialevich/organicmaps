@@ -5,11 +5,14 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import app.organicmaps.MwmApplication;
+import app.organicmaps.R;
 
 class SensorHelper implements SensorEventListener
 {
@@ -17,7 +20,6 @@ class SensorHelper implements SensorEventListener
   private final SensorManager mSensorManager;
   @Nullable
   private Sensor mRotation;
-  @SuppressWarnings("NotNullFieldNotInitialized")
   @NonNull
   private final MwmApplication mMwmApplication;
 
@@ -30,15 +32,17 @@ class SensorHelper implements SensorEventListener
     notifyInternal(event);
   }
 
+  private final static int kRotationVectorSensorType = Sensor.TYPE_ROTATION_VECTOR;
+
   private void notifyInternal(@NonNull SensorEvent event)
   {
-    if (event.sensor.getType() == Sensor.TYPE_ROTATION_VECTOR) {
-      float[] rotMatrix = new float[9];
+    if (event.sensor.getType() == kRotationVectorSensorType)
+    {
+      final float[] rotMatrix = new float[9];
       SensorManager.getRotationMatrixFromVector(rotMatrix, event.values);
-      SensorManager.remapCoordinateSystem(rotMatrix,
-                                          SensorManager.AXIS_X, SensorManager.AXIS_Y, rotMatrix);
+      SensorManager.remapCoordinateSystem(rotMatrix, SensorManager.AXIS_X, SensorManager.AXIS_Y, rotMatrix);
 
-      float[] rotVals = new float[3];
+      final float[] rotVals = new float[3];
       SensorManager.getOrientation(rotMatrix, rotVals);
 
       // rotVals indexes: 0 - yaw, 2 - roll, 1 - pitch.
@@ -47,7 +51,28 @@ class SensorHelper implements SensorEventListener
   }
 
   @Override
-  public void onAccuracyChanged(Sensor sensor, int accuracy) {}
+  public void onAccuracyChanged(Sensor sensor, int accuracy)
+  {
+    Log.i("onAccuracyChanged", "Sensor " + sensor.getStringType() + " has changed accuracy to " + accuracy);
+    if (sensor.getType() == kRotationVectorSensorType)
+    {
+      String toastText = null;
+      switch (accuracy)
+      {
+        case SensorManager.SENSOR_STATUS_ACCURACY_HIGH:
+          break;
+        case SensorManager.SENSOR_STATUS_ACCURACY_MEDIUM:
+          toastText = mMwmApplication.getString(R.string.compass_calibration_recommended);
+          break;
+        case SensorManager.SENSOR_STATUS_ACCURACY_LOW:
+        case SensorManager.SENSOR_STATUS_UNRELIABLE:
+        default:
+          toastText = mMwmApplication.getString(R.string.compass_calibration_required);
+      }
+      if (toastText != null)
+        Toast.makeText(mMwmApplication, toastText, Toast.LENGTH_LONG).show();
+    }
+  }
 
   SensorHelper(@NonNull Context context)
   {
