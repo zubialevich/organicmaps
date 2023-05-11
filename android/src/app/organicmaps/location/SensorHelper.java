@@ -33,20 +33,20 @@ class SensorHelper implements SensorEventListener
   }
 
   private final static int kRotationVectorSensorType = Sensor.TYPE_ROTATION_VECTOR;
+  private final float[] mRotationMatrix = new float[9];
+  private final float[] mRotationValues = new float[3];
 
   private void notifyInternal(@NonNull SensorEvent event)
   {
     if (event.sensor.getType() == kRotationVectorSensorType)
     {
-      final float[] rotMatrix = new float[9];
-      SensorManager.getRotationMatrixFromVector(rotMatrix, event.values);
-      SensorManager.remapCoordinateSystem(rotMatrix, SensorManager.AXIS_X, SensorManager.AXIS_Y, rotMatrix);
+      SensorManager.getRotationMatrixFromVector(mRotationMatrix, event.values);
+      SensorManager.remapCoordinateSystem(mRotationMatrix, SensorManager.AXIS_X, SensorManager.AXIS_Y, mRotationMatrix);
 
-      final float[] rotVals = new float[3];
-      SensorManager.getOrientation(rotMatrix, rotVals);
+      SensorManager.getOrientation(mRotationMatrix, mRotationValues);
 
-      // rotVals indexes: 0 - yaw, 2 - roll, 1 - pitch.
-      LocationHelper.INSTANCE.notifyCompassUpdated(rotVals[0]);
+      // mRotationValues indexes: 0 - yaw, 2 - roll, 1 - pitch.
+      LocationHelper.INSTANCE.notifyCompassUpdated(mRotationValues[0]);
     }
   }
 
