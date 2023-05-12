@@ -25,6 +25,8 @@ class SensorHelper implements SensorEventListener
 
   private final float[] mRotationMatrix = new float[9];
   private final float[] mRotationValues = new float[3];
+  // Initialized with purposely invalid value.
+  private int mLastAccuracy = -42;
 
   @Override
   public void onSensorChanged(SensorEvent event)
@@ -32,6 +34,30 @@ class SensorHelper implements SensorEventListener
     // Here we can have events from one out of these two sensors:
     // TYPE_GEOMAGNETIC_ROTATION_VECTOR
     // TYPE_ROTATION_VECTOR
+
+    if (mLastAccuracy != event.accuracy)
+    {
+      mLastAccuracy = event.accuracy;
+      String toastText = null;
+      switch (mLastAccuracy)
+      {
+        case SensorManager.SENSOR_STATUS_ACCURACY_HIGH:
+          break;
+        case SensorManager.SENSOR_STATUS_ACCURACY_MEDIUM:
+          toastText = mMwmApplication.getString(R.string.compass_calibration_recommended);
+          break;
+        case SensorManager.SENSOR_STATUS_ACCURACY_LOW:
+        case SensorManager.SENSOR_STATUS_UNRELIABLE:
+        default:
+          toastText = mMwmApplication.getString(R.string.compass_calibration_required);
+      }
+      if (toastText != null)
+        Toast.makeText(mMwmApplication, toastText, Toast.LENGTH_LONG).show();
+    }
+
+    if (event.accuracy == SensorManager.SENSOR_STATUS_UNRELIABLE)
+      return;
+
     SensorManager.getRotationMatrixFromVector(mRotationMatrix, event.values);
     SensorManager.remapCoordinateSystem(mRotationMatrix, SensorManager.AXIS_X, SensorManager.AXIS_Y, mRotationMatrix);
 
@@ -44,25 +70,9 @@ class SensorHelper implements SensorEventListener
   @Override
   public void onAccuracyChanged(Sensor sensor, int accuracy)
   {
-    // Here we can have events from one out of these two sensors:
-    // TYPE_GEOMAGNETIC_ROTATION_VECTOR
-    // TYPE_ROTATION_VECTOR
-    Log.i("onAccuracyChanged", "Sensor " + sensor.getStringType() + " has changed accuracy to " + accuracy);
-    String toastText = null;
-    switch (accuracy)
-    {
-      case SensorManager.SENSOR_STATUS_ACCURACY_HIGH:
-        break;
-      case SensorManager.SENSOR_STATUS_ACCURACY_MEDIUM:
-        toastText = mMwmApplication.getString(R.string.compass_calibration_recommended);
-        break;
-      case SensorManager.SENSOR_STATUS_ACCURACY_LOW:
-      case SensorManager.SENSOR_STATUS_UNRELIABLE:
-      default:
-        toastText = mMwmApplication.getString(R.string.compass_calibration_required);
-    }
-    if (toastText != null)
-      Toast.makeText(mMwmApplication, toastText, Toast.LENGTH_LONG).show();
+    Log.w("onAccuracyChanged", "Sensor " + sensor.getStringType() + " has changed accuracy to " + accuracy);
+    // This method is called _only_ when accuracy changes. To know the initial startup accuracy,
+    // and to show calibration warning toast if necessary, we check it in onSensorChanged().
   }
 
   SensorHelper(@NonNull Context context)
